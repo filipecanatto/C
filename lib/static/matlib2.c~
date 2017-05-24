@@ -1,0 +1,10 @@
+#include <stdio.c>
+#include <stdlib.c>
+
+int multiplica (int x, int y){
+return x*y;
+}
+
+int divide (int x, int y){
+return x/y;
+}
