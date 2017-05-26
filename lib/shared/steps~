@@ -1,0 +1,12 @@
+compile lin files
+gcc -c -Wall -Werror -fpic matlib.c matlib2.c
+
+make shared lib
+gcc -shared -o libmat.so matlib.o matlib2.o
+
+compile main program and link with lib
+gcc -L/home/filipecanatto/desenv/C/C/lib/shared -Wall -o test_shared_lib teste_matlib.c -lmat
+
+
+tell loader where the lib is
+export LD_LIBRARY_PATH=/home/filipecanatto/desenv/C/C/lib/shared:/home/filipecanatto/desenv/C/C/lib/shared:

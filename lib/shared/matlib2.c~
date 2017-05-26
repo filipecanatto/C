@@ -1,0 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+extern int multiplica (int x, int y){
+return x*y;
+}
+
+extern int divide (int x, int y){
+return x/y;
+}
