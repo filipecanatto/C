@@ -1,57 +1,82 @@
-PARA QUE SERVE ESSE PROGRAMA ?.
+PARA QUE SERVE ESSE PROGRAMA ?
 Esse programa tem a finalidade de mostrar como funciona o conceito de biblioteca compartilhada em ambientes Linux.
 
 OVERVIEW DE CONCEITOS:
-Uma lib (biblioteca) é um agrupamento de arquivos (.c e .h) isolados em um unico arquivo. 
+Uma lib (biblioteca) é um agrupamento de arquivos (.c e .h) isolados em um unico lugar (outro arquivo com extensão .so). 
 O agrupamento dos arquivos é feito na fase de compilacão. - Diferente de uma lib estatica os codigos
-fontes do client e server não são transformados em unico arquivo, mas apenas uma referencia a funções
-externas são mantidas no client. 
+fontes do client (programa que usa funções externas) e server (programa que implementa as funções) não 
+são transformados em unico arquivo, mas apenas uma referencia a funções externas são mantidas no client. 
 Em tempo de execução se uma chamada for feita a lib compartilhada, o sistema operacional ira carrega-la na
-memoria e ela estara disponivel para uso de programas client.
+memoria e ela estara disponivel para uso de programas clients.
 
-QUAL O BENEFICIO ?.
+QUAL O BENEFICIO ?
 - Organização do codigo fonte;
 - Reuso de código;
 
-BENEFICIOS EM RELAÇÃO A BIBLIOTECA ESTATICA:
-- Modificações podem ser feitas sem que os programas client sejam recompilados;
-- É feito um uso mais inteligente da memoria.
-
+BENEFÍCIOS EM RELAÇÃO A BIBLIOTECA ESTÁTICA:
+- Modificações podem ser feitas sem que os programas clients sejam recompilados;
+- É feito um uso mais inteligente da memoria, pois um programa estara carregado 
+em um unico lugar da memoria e estara disponivel para receber chamadas de N
+programas clients.
 
 TRY IT OUT:
+gcc -c -Wall -Werror -fpic matlib.c matlib2.c
+Compila os arquivos .c que irao compor a lib
 
-gcc -c matlib.c matlib2.c
-Realiza a compilação dos arquivos que irão compor a lib.
-- O parametro "-c" indica ao compilador que ele não deve tentar gerar um arquivo executavel.
+gcc -shared -o libmat.so matlib.o matlib2.o
+Criar uma lib compartilhada isolando todos os arquivos em um unico lugar, - um arquivo .so
 
-ar crv libmat.a matlib.o matlib2.o
-Agrupa os arquivos .o gerados em um unico arquivo (ou seja, cria uma lib).
+gcc -L/home/filipecanatto/desenv/C/C/lib/shared -Wall -o test_shared_lib teste_matlib.c -lmat
+Compila o programa client e cria um link com a lib
 
-gcc -c teste_matlib.c
-Compila o programa principal (cliente).
-
-gcc -o teste_matlib teste_matlib.o libmat.a
-Transforma o programa cliente e a lib em um unico arquivo. Após isso o programa pode ser executado.
-- O parametro "-o" diz ao compilador para criar o arquivo final com o nome "teste_matlib".
+export LD_LIBRARY_PATH=/home/filipecanatto/desenv/C/C/lib/shared:/home/filipecanatto/desenv/C/C/lib/shared
+Como fica a cargo do sistema operacional carregar a lib em memoria apos uma chamada dos programas clients,
+ele precisa saber em qual lugar do filesystem a lib esta localizada. Sendo assim é necessario popular 
+a variavel "LD_LIBRARY_PATH" com a localização correta (path).
 
 TESTE FINAL:
 ./teste_matlib
 
 OBSERVAÇÕES:
-- Os programas cliente e servidor foram tranformados em um unico arquivo;
-- Podemos apagar a lib sem impactar o programa final (opcional).
+- Os programas clients e server foram tranformados em um unico arquivo;
+- Não podemos apagar a lib sem impactar o programa final;
+- Em tempo de execução o sistema operacional ira carregar a biblioteca na memoria e disponibilizara para uso,
+  caso uma chamada seja feita a funções contidas na lib.
+  
+Descrição dos parametros usados pelo compilador (retirados do manual do GCC):
 
+-shared:
+Produce a shared object which can then be linked with other objects to form
+an executable. Not all systems support this option. For predictable results,
+you must also specify the same set of options used for compilation (‘-fpic’,
+‘-fPIC’, or model suboptions) when you specify this linker option.1
 
+-fpic: 
+Generate position-independent code (PIC) suitable for use in a shared library,
+if supported for the target machine. Such code accesses all constant addresses
+through a global offset table (GOT). The dynamic loader resolves the GOT
+entries when the program starts (the dynamic loader is not part of GCC; it
+is part of the operating system). If the GOT size for the linked executable
+exceeds a machine-specific maximum size, you get an error message from the
+linker indicating that ‘-fpic’ does not work; in that case, recompile with ‘-fPIC’
+instead. (These maximums are 8k on the SPARC, 28k on AArch64 and 32k on
+the m68k and RS/6000. The x86 has no such limit.)
+Position-independent code requires special support, and therefore works only on
+certain machines. For the x86, GCC supports PIC for System V but not for the
+Sun 386i. Code generated for the IBM RS/6000 is always position-independent.
+When this flag is set, the macros __pic__ and __PIC__ are defined to 1.
 
-compile lin files
-gcc -c -Wall -Werror -fpic matlib.c matlib2.c
+-c
+-S
+-E: 
+If any of these options is used, then the linker is not run, and object file names
+should not be used as arguments.
 
-make shared lib
-gcc -shared -o libmat.so matlib.o matlib2.o
+-Wall: 
+This enables all the warnings about constructions...
 
-compile main program and link with lib
-gcc -L/home/filipecanatto/desenv/C/C/lib/shared -Wall -o test_shared_lib teste_matlib.c -lmat
+-Werror: 
+Make all warnings into errors.
 
-
-tell to loader where the lib is
-export LD_LIBRARY_PATH=/home/filipecanatto/desenv/C/C/lib/shared:/home/filipecanatto/desenv/C/C/lib/shared:
+ 
+ 
