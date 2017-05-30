@@ -1,26 +1,20 @@
-Para que serve esse programa?
-Esse programa tem a finalidade de mostrar como funciona o conceito de biblioteca estatica em ambientes Linux.
+Esse programa tem a finalidade de mostrar como funciona os conceitos de 
+biblioteca estatica e compartilhada em ambientes Linux. São conceitos
+importantes e que trazem muitos beneficios no ambiente de desenvolvimento, como
+reuso de código, organização e desacoplamento.
 
-OVERVIEW DE CONCEITOS:
-oque é uma biblioteca estatica ?
-Um agrupamento de arquivos (.c e .h) isolados em um unico arquivo. O agrupamentos dos arquivos é feito na fase de compilacão.
-E responsabilidade do compilador e do linker em transformar o codigo fonte (cliente) e o codigo fonte servidor (aquele que faz a implementacao das funcoes) em
-um unico arquivo.
+O projeto foi organizado da seguinte maneira:
 
-Qual o beneficio?
-Organização do codigo fonte;
+└───lib
+    ├───shared
+    └───static
+	
+Cada conceito esta exemplificado dentro de sua respectiva pasta, e cada pasta
+contem um readme com instruções.
+	
 
-Quais os maleficios?
 
 
-compile files impl func
-gcc -c matlib.c matlib2.c
 
-become a lib
-ar crv libmat.a matlib.o matlib2.o
+	
 
-compile client
-gcc -c teste_matlib.c
-
-recompile and link, become a single file	
-gcc -o teste_matlib teste_matlib.o libmat.a
