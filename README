@@ -1,7 +1,4 @@
-Esse programa tem a finalidade de mostrar como funciona os conceitos de 
-biblioteca estatica e compartilhada em ambientes Linux. São conceitos
-importantes e que trazem muitos beneficios no ambiente de desenvolvimento, como
-reuso de código, organização e desacoplamento.
+Esse programa tem a finalidade de mostrar como funciona os conceitos de  biblioteca estatica e compartilhada no Linux. São conceitos importantes e que trazem muitos beneficios no ambiente de desenvolvimento, como reuso de código, organização e desacoplamento.
 
 O projeto foi organizado da seguinte maneira:
 
@@ -9,8 +6,7 @@ O projeto foi organizado da seguinte maneira:
     ├───shared
     └───static
 	
-Cada conceito esta exemplificado dentro de sua respectiva pasta, e cada pasta
-contem um readme com instruções.
+Cada conceito esta exemplificado dentro de sua respectiva pasta, e cada pasta contem um readme com instruções.
 	
 
 

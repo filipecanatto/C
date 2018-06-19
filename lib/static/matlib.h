@@ -1,5 +1,5 @@
 /*
-Esse arquivo e matlib.h. Ele declara funcoes matematicas 
+Esse arquivo agrupa as funções contidas nos arquivos matlib.c e matlib2.c 
 */
 
 int soma (int, int);

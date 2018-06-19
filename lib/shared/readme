@@ -1,25 +1,19 @@
 PARA QUE SERVE ESSE PROGRAMA ?
-Esse programa tem a finalidade de mostrar como funciona o conceito de biblioteca compartilhada em ambientes Linux.
+Esse programa tem a finalidade de mostrar como funciona o conceito de biblioteca compartilhada.
 
 OVERVIEW DE CONCEITOS:
-Uma lib (biblioteca) é um agrupamento de arquivos (.c e .h) isolados em um unico lugar (outro arquivo com extensão .so). 
-O agrupamento dos arquivos é feito na fase de compilacão. - Diferente de uma lib estatica os codigos
-fontes do client (programa que usa funções externas) e server (programa que implementa as funções) não 
-são transformados em unico arquivo, mas apenas uma referencia a funções externas são mantidas no client. 
-Em tempo de execução se uma chamada for feita a lib compartilhada, o sistema operacional ira carrega-la na
-memoria e ela estara disponivel para uso de programas clients.
+Uma lib compartilhada é um agrupamento de arquivos (.c e .h) isolados em um unico arquivo (um arquivo com a extensão .so). 
+O agrupamento dos arquivos é feito na fase de compilacão. - Diferente de uma lib estatica os codigos fontes do client (programa que usa funções) e server (programa que implementa as funções) não  são transformados em unico arquivo, mas apenas uma referencia a funções são mantidas no client. Em tempo de execução se uma chamada for feita a lib compartilhada, o sistema operacional ira carrega-la na memoria e ela estara disponivel para uso de programas clients.
+
+Ao se comparar com a lib estatica os seguintes beneficios são obtidos:
+Modificações podem ser feitas sem que os programas clients sejam recompilados;
+É feito um uso mais inteligente da memoria, pois um programa estara carregado em um unico lugar da memoria e estara disponivel para receber chamadas de n programas clients.
 
 QUAL O BENEFICIO ?
 - Organização do codigo fonte;
 - Reuso de código;
 
-BENEFÍCIOS EM RELAÇÃO A BIBLIOTECA ESTÁTICA:
-- Modificações podem ser feitas sem que os programas clients sejam recompilados;
-- É feito um uso mais inteligente da memoria, pois um programa estara carregado 
-em um unico lugar da memoria e estara disponivel para receber chamadas de N
-programas clients.
-
-TRY IT OUT:
+Compilando e executando:
 gcc -c -Wall -Werror -fpic matlib.c matlib2.c
 Compila os arquivos .c que irao compor a lib
 
@@ -30,19 +24,17 @@ gcc -L/home/filipecanatto/desenv/C/C/lib/shared -Wall -o test_shared_lib teste_m
 Compila o programa client e cria um link com a lib
 
 export LD_LIBRARY_PATH=/home/filipecanatto/desenv/C/C/lib/shared:/home/filipecanatto/desenv/C/C/lib/shared
-Como fica a cargo do sistema operacional carregar a lib em memoria apos uma chamada dos programas clients,
-ele precisa saber em qual lugar do filesystem a lib esta localizada. Sendo assim é necessario popular 
-a variavel "LD_LIBRARY_PATH" com a localização correta (path).
+Como fica a cargo do sistema operacional carregar a lib em memoria apos uma chamada dos programas clients, ele precisa saber em qual lugar do filesystem a lib esta localizada. Sendo assim é necessario popular a variavel "LD_LIBRARY_PATH" com a localização correta (path).
 
 TESTE FINAL:
 ./teste_matlib
 
 OBSERVAÇÕES:
-- Os programas clients e server foram tranformados em um unico arquivo;
-- Não podemos apagar a lib sem impactar o programa final;
-- Em tempo de execução o sistema operacional ira carregar a biblioteca na memoria e disponibilizara para uso,
-  caso uma chamada seja feita a funções contidas na lib.
+Os programas clients e server foram tranformados em um unico arquivo;
+Não podemos apagar a lib sem impactar o programa final;
+Em tempo de execução o sistema operacional ira carregar a biblioteca na memoria e disponibilizara para uso, caso uma chamada seja feita a funções contidas na lib.
   
+
 Descrição dos parametros usados pelo compilador (retirados do manual do GCC):
 
 -shared:
@@ -77,6 +69,3 @@ This enables all the warnings about constructions...
 
 -Werror: 
 Make all warnings into errors.
-
- 
- 
